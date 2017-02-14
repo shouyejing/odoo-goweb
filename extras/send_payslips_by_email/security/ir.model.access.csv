@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_send_payslips_by_email_send_payslips_by_email,send_payslips_by_email.send_payslips_by_email,model_send_payslips_by_email_send_payslips_by_email,,1,0,0,0

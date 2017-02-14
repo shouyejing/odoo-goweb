@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="stock_compare_wizard" model="ir.ui.view">
+            <field name="name">Stock/Price Comparison</field>
+            <field name="model">product.stock.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Scheduler Parameters">
+                    <p>
+                        <h2>Compare Stock/Price With Magento.</h2>
+                    </p>
+                        <group>
+                            <field name="options"  widget="radio" />
+                        </group>
+                        <group>
+                        </group>
+                        <div>
+                            <b><field name="stock_price_info" nolabel="True" attrs="{'invisible': [('options','in', ('all', False))]}" /></b>
+                        </div>
+                        <group >
+                            <group>
+                                <field name="range_from" attrs="{'invisible': [('options','in', ('all', False))], 'required': [('options', '!=', 'all')]}"/>
+                            </group>
+                            <group>
+                                <field name="range_to" attrs="{'invisible': [('options','in', ('all', False))], 'required': [('options', '!=', 'all')]}"/>
+                            </group>
+                        </group>
+                    <footer>
+                        <button name="stock_comapre" string="Compare Now" type="object" class="btn-primary" invisible= "not context.get('price') == False"/>
+
+                        <button name="price_comapre" string="Compare Now" type="object" class="btn-primary" invisible= "not context.get('stock') == False"/>
+
+                        <button string="Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="stock_compare_action" model="ir.actions.act_window">
+            <field name="name">Compare Stock</field>
+            <field name="res_model">product.stock.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'price': False}</field>
+        </record>
+
+        <record id="price_compare_action" model="ir.actions.act_window">
+            <field name="name">Compare Price</field>
+            <field name="res_model">product.stock.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'stock': False}</field>
+        </record>
+
+         <menuitem id="stock_compare_wiz_action" parent="magento_bridge.menu_mapping_id"
+				 action="stock_compare_action" sequence="14"/>
+        <menuitem id="stock_price_wiz_action" parent="magento_bridge.menu_mapping_id"
+                 action="price_compare_action" sequence="15"/>
+	</data>
+</openerp>
+		

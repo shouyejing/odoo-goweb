@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="purchase_order_sale_order_ref" model="ir.ui.view">
+            <field name="name">purchase.order.sale.order.ref</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='view_picking']" position="replace">
+                    <button name="view_picking" string="Enviar / Recibir Productos" type="object" attrs="{'invisible': ['|', ('shipped','=',True), ('state','!=', 'approved')]}" class="oe_highlight"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='date_approve']" position="after">
+                    <field name="order_id"></field>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="account_move_reviewed_state" model="ir.ui.view">
+            <field name="name">account.move.reviewed.state</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='button_cancel']" position="replace">
+                    <button name="button_cancel" states="posted" string="Cancel Entry" type="object"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+                <xpath expr="//button[@name='button_validate']" position="before">
+                    <button name="button_reviewed" states="draft" string="Review" type="object"
+                            class="oe_highlight" groups="account.group_account_manager"/>
+                </xpath>
+
+                <xpath expr="//button[@name='button_validate']" position="replace">
+                    <button name="button_validate" states="reviewed" string="Post" type="object"
+                            class="oe_highlight" groups="account.group_account_invoice"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Para la parte de Factura de Cliente-->
+        <record id="account_invoice_supplier_form_change" model="ir.ui.view">
+            <field name="name">account.invoice.supplier.form.change</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='invoice_cancel']" position="replace">
+                       <button name="invoice_cancel" states="draft,proforma2" string="Cancel Invoice"
+                               groups="account.group_account_manager"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Para la parte de Recibo de Ventas -->
+        <record id="account_voucher_view_sale_form_change" model="ir.ui.view">
+            <field name="name">account.voucher.view.sale.form.change</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_sale_receipt_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='cancel_voucher']" position="replace">
+                    <button name="cancel_voucher" string="Cancel Receipt" states="draft,proforma"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+
+                <xpath expr="//button[@name='cancel_voucher'][@type='object']" position="replace">
+                    <button name="cancel_voucher" string="Cancel Receipt" type="object" states="posted"
+                            confirm="Are you sure you want to cancel this receipt?"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+
+        <!-- Para la parte de Pago de Cliente-->
+        <record id="account_voucher_receipt_form_change" model="ir.ui.view">
+            <field name="name">account.voucher.receipt.form.change</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@string='Cancel Receipt']" position="replace">
+                    <button name="cancel_voucher" string="Cancel Receipt" states="draft,proforma"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+                <xpath expr="//button[@string='Unreconcile']" position="replace">
+                    <button name="cancel_voucher" string="Unreconcile" type="object" states="posted"
+                            confirm="Are you sure to unreconcile and cancel this record ?"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Para la parte de Recibo de Compra-->
+        <record id="account_voucher_purchase_form_change" model="ir.ui.view">
+            <field name="name">account.voucher.purchase.form.change</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_purchase_receipt_form"/>
+            <field name="arch" type="xml">
+
+
+                <xpath expr="//button[@name='cancel_voucher'][@type='object']" position="replace">
+                    <button name="cancel_voucher" string="Cancel Voucher" type="object" states="posted"
+                            confirm="Are you sure you want to cancel this receipt?"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+
+            </field>
+        </record>
+
+
+        <!-- Para la parte de Pagos de Proveedores-->
+        <record id="account_voucher_payment_form_change" model="ir.ui.view">
+            <field name="name">account.voucher.payment.form.change</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_payment_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@string='Cancel Voucher']" position="replace">
+                    <button name="cancel_voucher" string="Cancel Voucher" states="draft,proforma"
+                            invisible="context.get('line_type', False)"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+                <xpath expr="//button[@string='Unreconcile']" position="replace">
+                    <button name="cancel_voucher" string="Unreconcile" type="object" states="posted"
+                            invisible="context.get('line_type', False)"
+                            confirm="Are you sure to unreconcile and cancel this record ?"
+                            groups="account.group_account_manager"/>
+                </xpath>
+
+            </field>
+        </record>
+
+
+        <!-- Para la parte de Extractos Bancario-->
+        <record id="account_bank_statement_form_change" model="ir.ui.view">
+            <field name="name">account.bank.statement.form.change</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='button_cancel']" position="replace">
+                    <button name="button_cancel" states="confirm" string="Cancel Statement" type="object"
+                            groups="account.group_account_manager"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Para la parte de Registro de Caja-->
+        <record id="account_bank_statement_form_change" model="ir.ui.view">
+            <field name="name">account.bank.statement.form.change</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form2"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='button_cancel']" position="replace">
+                    <button name="button_cancel" states="confirm,open" string="Cancel CashBox" type="object"
+                            groups="account.group_account_manager"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- Para el pedido de ventas -->
+        <record id="sale_order_form_change" model="ir.ui.view">
+            <field name="name">sale.order.form.change</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_quotation_send']" position="before">
+                    <button name="button_set_to_done" states="shipping_except,invoice_except" string="Marcar como Realizado" type="object"
+                            groups="account.group_account_manager"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+       <!-- Para el pedido de ventas -->
+        <record id="sale_order_form_change_cancel" model="ir.ui.view">
+            <field name="name">sale.order.form.change.cancel</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_quotation_send']" position="before">
+                    <button name="button_set_to_cancel" states="shipping_except,invoice_except" string="Marcar como cancelado" type="object"
+                            groups="account.group_account_manager"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

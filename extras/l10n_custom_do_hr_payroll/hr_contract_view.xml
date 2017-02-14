@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="hr_contract_news_inherit">
+			<field name="name">hr.contract.news.inherit</field>
+			<field name="model">hr.contract</field>
+			<field name="priority">20</field>
+			<field name="inherit_id" ref="hr_contract.hr_contract_view_form" />
+			<field name="arch" type="xml">
+				<data>
+				  <xpath expr="//page[@name='information']" position="after">
+				    <page name="contract_news" string="Novedades del Contrato">
+						<separator/>
+						<group string="Descuentos" col="2">
+							
+                            <group string="Avance a Sueldo">
+								<field name="avance_sueldo_apply"/>
+								<field name="avance_sueldo_discount_amount" attrs="{'invisible':[('avance_sueldo_apply','=',False)], 'required':[('avance_sueldo_apply','=',True)]}"/>
+								<field name="avance_sueldo_frequency_type" attrs="{'invisible':[('avance_sueldo_apply','=',False)], 'required':[('avance_sueldo_apply','=',True)]}"/>
+								<field name="avance_sueldo_apply_on" attrs="{'invisible':[('avance_sueldo_apply','=',False)], 'required':[('avance_sueldo_apply','=',True)] }"/>
+								<field name="avance_sueldo_frequency_number" attrs="{'readonly':[('avance_sueldo_frequency_type','=', 'fixed')],'required':[('avance_sueldo_frequency_type','=', 'variable')] ,'invisible':[('avance_sueldo_apply','=',False)], 'invisible':[('avance_sueldo_frequency_type','=','fixed')]}"/>
+								<field name="avance_sueldo_start_date" attrs="{'readonly':[('avance_sueldo_frequency_type','=', 'fixed')],'required':[('avance_sueldo_frequency_type','=', 'variable')] ,'invisible':[('avance_sueldo_apply','=',False)], 'invisible':[('avance_sueldo_frequency_type','=','fixed')]}"/>
+								<field name="avance_sueldo_end_date" attrs="{'readonly':[('avance_sueldo_frequency_type','=', 'fixed')],'required':[('avance_sueldo_frequency_type','=', 'variable')] ,'invisible':[('avance_sueldo_apply','=',False)], 'invisible':[('avance_sueldo_frequency_type','=','fixed')]}"/>
+							</group>
+
+                            <group string="Descuento de Facturas">
+								<field name="descuento_factura_apply"/>
+								<field name="descuento_factura_discount_amount" attrs="{'invisible':[('descuento_factura_apply','=',False)], 'required':[('descuento_factura_apply','=',True)]}"/>
+								<field name="descuento_factura_frequency_type" attrs="{'invisible':[('descuento_factura_apply','=',False)], 'required':[('descuento_factura_apply','=',True)]}"/>
+								<field name="descuento_factura_apply_on" attrs="{'invisible':[('descuento_factura_apply','=',False)], 'required':[('descuento_factura_apply','=',True)] }"/>
+								<field name="descuento_factura_frequency_number" attrs="{'readonly':[('descuento_factura_frequency_type','=', 'fixed')],'required':[('descuento_factura_frequency_type','=', 'variable')] ,'invisible':[('descuento_factura_apply','=',False)], 'invisible':[('descuento_factura_frequency_type','=','fixed')]}"/>
+								<field name="descuento_factura_start_date" attrs="{'readonly':[('descuento_factura_frequency_type','=', 'fixed')],'required':[('descuento_factura_frequency_type','=', 'variable')] ,'invisible':[('descuento_factura_apply','=',False)], 'invisible':[('descuento_factura_frequency_type','=','fixed')]}"/>
+								<field name="descuento_factura_end_date" attrs="{'readonly':[('descuento_factura_frequency_type','=', 'fixed')],'required':[('descuento_factura_frequency_type','=', 'variable')] ,'invisible':[('descuento_factura_apply','=',False)], 'invisible':[('descuento_factura_frequency_type','=','fixed')]}"/>
+							</group>
+                            
+                            <group string="Prestamos Caja Chica">
+								<field name="prest_cjc_apply"/>
+								<field name="prest_cjc_discount_amount" attrs="{'invisible':[('prest_cjc_apply','=',False)], 'required':[('prest_cjc_apply','=',True)]}"/>
+								<field name="prest_cjc_frequency_type" attrs="{'invisible':[('prest_cjc_apply','=',False)], 'required':[('prest_cjc_apply','=',True)]}"/>
+								<field name="prest_cjc_apply_on" attrs="{'invisible':[('prest_cjc_apply','=',False)], 'required':[('prest_cjc_apply','=',True)] }"/>
+								<field name="prest_cjc_frequency_number" attrs="{'readonly':[('prest_cjc_frequency_type','=', 'fixed')],'required':[('prest_cjc_frequency_type','=', 'variable')] ,'invisible':[('prest_cjc_apply','=',False)], 'invisible':[('prest_cjc_frequency_type','=','fixed')]}"/>
+								<field name="prest_cjc_start_date" attrs="{'readonly':[('prest_cjc_frequency_type','=', 'fixed')],'required':[('prest_cjc_frequency_type','=', 'variable')] ,'invisible':[('prest_cjc_apply','=',False)], 'invisible':[('prest_cjc_frequency_type','=','fixed')]}"/>
+								<field name="prest_cjc_end_date" attrs="{'readonly':[('prest_cjc_frequency_type','=', 'fixed')],'required':[('prest_cjc_frequency_type','=', 'variable')] ,'invisible':[('prest_cjc_apply','=',False)], 'invisible':[('prest_cjc_frequency_type','=','fixed')]}"/>
+							</group>
+                            
+                            <group string="Otros Descuentos">
+								<field name="otros_desc_apply"/>
+								<field name="otros_desc_discount_amount" attrs="{'invisible':[('otros_desc_apply','=',False)], 'required':[('otros_desc_apply','=',True)]}"/>
+								<field name="otros_desc_frequency_type" attrs="{'invisible':[('otros_desc_apply','=',False)], 'required':[('otros_desc_apply','=',True)]}"/>
+								<field name="otros_desc_apply_on" attrs="{'invisible':[('otros_desc_apply','=',False)], 'required':[('otros_desc_apply','=',True)] }"/>
+								<field name="otros_desc_frequency_number" attrs="{'readonly':[('otros_desc_frequency_type','=', 'fixed')],'required':[('otros_desc_frequency_type','=', 'variable')] ,'invisible':[('otros_desc_apply','=',False)], 'invisible':[('otros_desc_frequency_type','=','fixed')]}"/>
+								<field name="otros_desc_start_date" attrs="{'readonly':[('otros_desc_frequency_type','=', 'fixed')],'required':[('otros_desc_frequency_type','=', 'variable')] ,'invisible':[('otros_desc_apply','=',False)], 'invisible':[('otros_desc_frequency_type','=','fixed')]}"/>
+								<field name="otros_desc_end_date" attrs="{'readonly':[('otros_desc_frequency_type','=', 'fixed')],'required':[('otros_desc_frequency_type','=', 'variable')] ,'invisible':[('otros_desc_apply','=',False)], 'invisible':[('otros_desc_frequency_type','=','fixed')]}"/>
+							</group>
+                            
+                            <group string="Optica">
+								<field name="optica_apply"/>
+								<field name="optica_discount_amount" attrs="{'invisible':[('optica_apply','=',False)], 'required':[('optica_apply','=',True)]}"/>
+								<field name="optica_frequency_type" attrs="{'invisible':[('optica_apply','=',False)], 'required':[('optica_apply','=',True)]}"/>
+								<field name="optica_apply_on" attrs="{'invisible':[('optica_apply','=',False)], 'required':[('optica_apply','=',True)] }"/>
+								<field name="optica_frequency_number" attrs="{'readonly':[('optica_frequency_type','=', 'fixed')],'required':[('optica_frequency_type','=', 'variable')] ,'invisible':[('optica_apply','=',False)], 'invisible':[('optica_frequency_type','=','fixed')]}"/>
+								<field name="optica_start_date" attrs="{'readonly':[('optica_frequency_type','=', 'fixed')],'required':[('optica_frequency_type','=', 'variable')] ,'invisible':[('optica_apply','=',False)], 'invisible':[('optica_frequency_type','=','fixed')]}"/>
+								<field name="optica_end_date" attrs="{'readonly':[('optica_frequency_type','=', 'fixed')],'required':[('optica_frequency_type','=', 'variable')] ,'invisible':[('optica_apply','=',False)], 'invisible':[('optica_frequency_type','=','fixed')]}"/>
+							</group>
+                            
+                            <group string="Seguro Medico Complementario">
+								<field name="smc_apply"/>
+								<field name="smc_discount_amount" attrs="{'invisible':[('smc_apply','=',False)], 'required':[('smc_apply','=',True)]}"/>
+								<field name="smc_frequency_type" attrs="{'invisible':[('smc_apply','=',False)], 'required':[('smc_apply','=',True)]}"/>
+								<field name="smc_apply_on" attrs="{'invisible':[('smc_apply','=',False)], 'required':[('smc_apply','=',True)] }"/>
+								<field name="smc_frequency_number" attrs="{'readonly':[('smc_frequency_type','=', 'fixed')],'required':[('smc_frequency_type','=', 'variable')] ,'invisible':[('smc_apply','=',False)], 'invisible':[('smc_frequency_type','=','fixed')]}"/>
+								<field name="smc_start_date" attrs="{'readonly':[('smc_frequency_type','=', 'fixed')],'required':[('smc_frequency_type','=', 'variable')] ,'invisible':[('smc_apply','=',False)], 'invisible':[('smc_frequency_type','=','fixed')]}"/>
+								<field name="smc_end_date" attrs="{'readonly':[('smc_frequency_type','=', 'fixed')],'required':[('smc_frequency_type','=', 'variable')] ,'invisible':[('smc_apply','=',False)], 'invisible':[('smc_frequency_type','=','fixed')]}"/>
+							</group>
+                            
+                        </group>
+
+						<group string="Otros Ingresos" col="2">
+
+						</group>
+
+                    </page>
+
+				  </xpath>
+			    </data>
+            </field>
+		</record>
+
+
+    </data>
+</openerp>
+

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+    	 <record id="view_partner_limit_form_pricelist" model="ir.ui.view">
+            <field name="name">res.partner.purchase.limit.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+			<xpath position="after" expr="//form/sheet/notebook/page[@name='sales_purchases']/group/group/field[@name='supplier']">
+				<field name="stock_limit_per_supplier"/>
+            </xpath>
+            </field>
+        </record>
+		
+		 <record id="product_supplierinfo_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.supplierinfo.form.view.inherit</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+            <field name="arch" type="xml">
+            <xpath position="replace" expr="//form/field[@name='pricelist_ids']/tree/field[@name='price']">
+        		 <field name="price" string="Purchase Price(column6)"/>
+			</xpath>
+			<xpath position="replace" expr="//form/field[@name='pricelist_ids']/form/group/field[@name='price']">
+        		 <field name="price" string="Purchase Price(column6)"/>
+			</xpath>
+            <xpath position="before" expr="//form/field[@name='pricelist_ids']/tree/field[@name='price']">
+        		<field name="sale_price"/>
+			</xpath>
+			 <xpath position="before" expr="//form/field[@name='pricelist_ids']/form/group/field[@name='price']">
+        		<field name="sale_price"/>
+			</xpath>
+            </field>
+        </record>
+        
+        <!-- product view -->
+        
+        <record id="product_normal_form_view_import" model="ir.ui.view">
+            <field name="name">product.product.form.import</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+            	<field name="standard_price" position="after">
+             		<field name="preferred_supplier" string="Preferred Supplier"/>
+              	</field>
+          </field>
+        </record>
+            
+            
+	</data>
+</openerp>

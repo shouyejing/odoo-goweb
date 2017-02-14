@@ -1,0 +1,107 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* goweb_gift_wrap
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-15 14:08+0000\n"
+"PO-Revision-Date: 2015-09-15 14:08+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: goweb_gift_wrap
+#: field:procurement.group,add_gift_message:0
+#: field:purchase.order,add_gift_message:0
+#: field:sale.order,add_gift_message:0
+#: field:stock.picking,add_gift_message:0
+msgid "Add a gift message to my order"
+msgstr "Añadir un mensaje de regalo a mi pedido"
+
+#. module: goweb_gift_wrap
+#: field:procurement.group,additional_message:0
+#: field:purchase.order,additional_message:0
+#: field:sale.order,additional_message:0
+#: field:stock.picking,additional_message:0
+msgid "Additional Message"
+msgstr "Mensaje Adicional"
+
+#. module: goweb_gift_wrap
+#: field:res.partner,contact_name:0
+msgid "Contacto"
+msgstr "Contacto"
+
+#. module: goweb_gift_wrap
+#: field:procurement.group,gift_from:0
+#: field:purchase.order,gift_from:0
+#: field:sale.order,gift_from:0
+#: field:stock.picking,gift_from:0
+msgid "From"
+msgstr "De"
+
+#. module: goweb_gift_wrap
+#: field:procurement.group,gift_wrap_true:0
+#: field:purchase.order,gift_wrap_true:0
+#: field:sale.order,gift_wrap_true:0
+#: field:stock.picking,gift_wrap_true:0
+msgid "Gift Wrap"
+msgstr "Envoltura de Regalo"
+
+#. module: goweb_gift_wrap
+#: field:procurement.group,gift_message:0
+#: field:purchase.order,gift_message:0
+#: field:sale.order,gift_message:0
+#: field:stock.picking,gift_message:0
+msgid "Message"
+msgstr "Mensaje"
+
+#. module: goweb_gift_wrap
+#: model:ir.model,name:goweb_gift_wrap.model_res_partner
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: goweb_gift_wrap
+#: model:ir.model,name:goweb_gift_wrap.model_stock_picking
+msgid "Picking List"
+msgstr "Lista de Despacho"
+
+#. module: goweb_gift_wrap
+#: model:ir.model,name:goweb_gift_wrap.model_procurement_order
+msgid "Procurement"
+msgstr "Abastecimiento"
+
+#. module: goweb_gift_wrap
+#: model:ir.model,name:goweb_gift_wrap.model_procurement_group
+msgid "Procurement Requisition"
+msgstr "Petición de abastecimiento"
+
+#. module: goweb_gift_wrap
+#: model:ir.model,name:goweb_gift_wrap.model_purchase_order
+msgid "Purchase Order"
+msgstr "Pedido de compra"
+
+#. module: goweb_gift_wrap
+#: model:ir.model,name:goweb_gift_wrap.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de venta"
+
+#. module: goweb_gift_wrap
+#: field:procurement.group,time_of_delivery:0
+#: field:purchase.order,time_of_delivery:0
+#: field:sale.order,time_of_delivery:0
+#: field:stock.picking,time_of_delivery:0
+msgid "Time of Delivery"
+msgstr "Fecha y Hora de Entrega"
+
+#. module: goweb_gift_wrap
+#: field:procurement.group,gift_to:0
+#: field:purchase.order,gift_to:0
+#: field:sale.order,gift_to:0
+#: field:stock.picking,gift_to:0
+msgid "To"
+msgstr "Para"

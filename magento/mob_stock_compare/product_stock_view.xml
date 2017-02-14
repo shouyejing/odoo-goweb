@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>	
+        <record id="mob_product_stock_form" model="ir.ui.view">
+            <field name="name">magento.product.form.view.inherit</field>
+            <field name="model">magento.product</field>
+            <field name="inherit_id" ref="magento_bridge.map_product_form"/>
+            <field name="arch" type="xml">              
+                <field name="need_sync" position="after">
+                    <field name="oe_qty_available"/>
+                    <field name="mag_qty_available"/>
+                </field>
+            </field>
+        </record>
+	
+		<record id="mob_product_stock_tree" model="ir.ui.view">
+            <field name="name">product.stock.tree</field>
+            <field name="model">magento.product</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Products" colors="red:stock_error==True" create="false" >	
+						<field name="pro_name"/>				
+						<field name="oe_product_id"/>	
+						<field name="mag_product_id"/>	
+						<field name="oe_qty_available"/>
+						<field name="mag_qty_available"/>	
+						<field name="stock_error"/>						 
+				</tree>
+			</field>
+        </record>
+
+        <record id="mob_product_price_form" model="ir.ui.view">
+            <field name="name">magento.product.form.view.inherit</field>
+            <field name="model">magento.product</field>
+            <field name="inherit_id" ref="magento_bridge.map_product_form"/>
+            <field name="arch" type="xml">              
+                <field name="need_sync" position="after">
+                    <field name="oe_price"/>
+                    <field name="mag_price"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="mob_product_price_tree" model="ir.ui.view">
+            <field name="name">product.price.tree</field>
+            <field name="model">magento.product</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Products" colors="red:price_error==True" create="false" >
+                        <field name="pro_name"/>
+                        <field name="oe_product_id"/>
+                        <field name="mag_product_id"/>
+                        <field name="oe_price"/>
+                        <field name="mag_price"/>
+                        <field name="price_error"/>
+                </tree>
+            </field>
+        </record>
+
+	</data>
+</openerp>
+		

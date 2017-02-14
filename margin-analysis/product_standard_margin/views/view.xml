@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <!-- Inherit Form View to Modify it -->
+        <record id="product.product_product_standard_price_tree_view" model="ir.ui.view">
+            <field name="name">product.product.standard.price.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='lst_price']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="standard_margin" />
+                    <field name="standard_margin_rate" />
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="view_product_product_form" model="ir.ui.view">
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='standard_price']" position="after">
+                    <group name="Margin">
+                        <field name="standard_margin" />
+                        <field name="standard_margin_rate" />
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

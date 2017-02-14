@@ -1,0 +1,13 @@
+./stock-logistics-transport/.git
+./stock-logistics-warehouse/.git
+./Odoo_addons/.git
+./odoo/.git
+./product-attribute/.git
+./odoo-addons/.git
+./server-tools/.git
+./.git
+./extras/account_voucher_payment_method/.git
+./extras/account_invoice_seq_number/.git
+./purchase-workflow/.git
+./stock-logistics-tracking/.git
+./stock-logistics-workflow/.git

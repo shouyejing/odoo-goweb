@@ -1,0 +1,16 @@
+<openerp>
+    <data noupdate='1'>
+        <record model="ir.sequence.type" id="seq_bpd_text">
+            <field name="name">bpd sec</field>
+            <field name="code">bpd</field>
+        </record>
+        <record model="ir.sequence" id="seq_bpd">
+            <field name="name">Seq BNKPD</field>
+            <field name="code">bpd</field>
+            <field name="prefix"></field>
+            <field name="padding">7</field>
+        </record>    
+    
+    
+    </data>
+</openerp>

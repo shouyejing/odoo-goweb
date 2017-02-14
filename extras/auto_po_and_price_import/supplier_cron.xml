@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="ir_cron_supplier_pricelist_import" model="ir.cron">
+            <field name="name">Import Supplier Pricelist</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="model">import.supplier.pricelist</field>
+            <field name="function">import_supplier_price</field>
+            <field name="args">()</field>
+        </record>
+        <record id="ir_cron_sync_magento" model="ir.cron">
+            <field name="name">Sync back to Magento after Importing CSV</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="model">sync.back2.magento</field>
+            <field name="function">sync_products_back2_magento</field>
+            <field name="args">()</field>
+        </record>
+        
+    </data>
+</openerp>

@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<openerp>
+    <data>
+
+        <record id="bpd_payslip_run_report_form" model="ir.ui.view">
+            <field name="name">bpd.payslip.report.form</field>
+            <field name="model">bdp.payslip.run.report</field>
+            <field name="arch" type="xml">
+                <form string="Reporte TXT Nomina Electronica BPD">
+
+                        <header>
+                            <button name="action_generate_txt" string="Generar Archivo" type="object" class="oe_highlight" attrs="{'invisible':[('report','!=', False)]}"/>
+                            <button name="re_create_payslip_run_line" string="Re-Generar Archivo" type="object" class="oe_highlight" attrs="{'invisible':[('report','=', False)]}"/>
+                            <field name="state" widget="statusbar" statusbar_visible="draft,sent,cancel" statusbar_colors='{"draft":"blue","sent":"black"}'/>
+
+                        </header>
+                        <group col="4">
+                            <!--field name="name"/-->
+                            <field name="company_id"/>
+                            <field name="payslip_run_id"/>
+                            <field name="line_count"/>
+                            <field name="report" filename="report_name"/>
+                            <field name="type" readonly='1'/>
+                            <field name="effective_date" required='1'/>
+                            <field name="numero_afiliacion" attrs="{'invisible': [('type', '!=', '3')], 'required': [('type', '=', '3')]}" />
+                            <field name="email"/>
+                            <field name="num_cuenta"/>
+                        </group>
+                        <notebook colspan="4">
+                            <page string="Lineas">
+                                <field name="payslip_run_line_report_ids" colspan="4" nolabel="1">
+                                    <tree string="Lineas">
+                                        <field name="line"/>
+                                        <field name="NUM_CUENTA"/>
+                                        <field name="NOMBRE"/>
+                                        <field name="SECUENCIA"/>
+                                        <field name="MONTO"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+
+                </form>
+            </field>
+        </record>
+
+         <record id="bpd_payslip_run_report_tree" model="ir.ui.view">
+             <field name="name">bpd.payslip.run.report.tree</field>
+             <field name="model">bdp.payslip.run.report</field>
+             <field name="arch" type="xml">
+                 <tree string="Reportes TXT">
+                     <field name="company_id"/>
+                     <field name="payslip_run_id"/>
+                     <field name="line_count"/>
+                     <field name="report"/>
+                 </tree>
+             </field>
+         </record>
+
+        <record id="bpd_txt_extract" model="ir.actions.act_window">
+            <field name="name">Extraccion TXT BPD</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bdp.payslip.run.report</field>
+            <field name="view_mode">tree,form</field>
+
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="menu_bpd_payslip_run_extract" parent="hr_payroll.menu_hr_root_payroll" action="bpd_txt_extract" sequence="30"/>
+
+    </data>
+</openerp>

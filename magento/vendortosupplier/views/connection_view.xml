@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+		<!-- Supplier configuration -->
+		<record id="supplier_configure_form" model="ir.ui.view">
+		    <field name="name">supplier.configure.form</field>
+		    <field name="model">supplier.configure</field>
+		    <field name="type">form</field>
+		    <field name="arch" type="xml">
+		        <form string="Supplier Connection" >
+					<header>
+		                <button name="test_connection" 
+		                        type='object' icon="gtk-network" class="oe_highlight" string='Test Connection'/>
+		            </header>
+					<sheet>
+						<h3><field name="status"/></h3>
+						<label for="active"/>
+						<h3><field name="active"/></h3>
+						<div class="oe_horizontal_separator oe_clear ">
+		                    Supplier API Settings
+		                </div>
+						<group>
+							<label for="url"/>
+							<h3><field name="url" colspan="4" placeholder="Example: http://supplier.com"/></h3>
+							<field name="credential"/>
+							<field name="validate"/>
+							<field name="supplier_uid"/>
+						</group>
+						<notebook>
+							<page string="API Credentials" attrs="{'invisible': [('credential','!=', True)]}">
+								<group>
+									<group>
+										<label for="user"/>
+										<h3><field name="user" placeholder="Example: apiuser"/></h3>
+									</group>
+									<group>
+										<label for="pwd"/>
+										<h3><field name="pwd" placeholder="Example: apipassword"/></h3>
+									</group>
+									<group>
+										<label for="db"/>
+										<h3><field name="db" placeholder="Example: supplierdb"/></h3>
+									</group>
+									<group>
+										<label for="partner_id"/>
+										<h3><field name="partner_id" domain="[('supplier','=',True)]"/></h3>
+									</group>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+		                <field name="message_follower_ids" widget="mail_followers"/>
+		                <field name="message_ids" widget="mail_thread" options='{"thread_level": 1}'/>
+		            </div>
+				</form>
+			</field>
+		</record>
+
+		<record id="supplier_configure_tree" model="ir.ui.view">
+		    <field name="name">supplier.configure.tree</field>
+		    <field name="model">supplier.configure</field>
+		    <field name="type">tree</field>
+		    <field name="arch" type="xml">
+		        <tree string="Supplier Connection">
+					<field name="name"/>
+					<field name="user"/>
+					<field name="active"/>
+					<field name="create_date"/>
+				</tree>
+			</field>
+		</record>
+		
+		<!--   Supplier To Vendor Action  -->
+		<record id="supplier_configure_tree_action" model="ir.actions.act_window">
+		    <field name="name">Supplier Connection</field>
+		    <field name="res_model">supplier.configure</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+			<p class="oe_view_nocontent_create">
+		        Click to define a new Supplier connection.
+		    </p><p>
+		       At first create a Web Services(Xml-rpc user/roles) on supplier.
+			   And then Define those credentials for Supplier connection.
+		      </p>
+			</field>
+		    <field name="view_id" ref="supplier_configure_tree"/>
+		</record>
+		<!--   Supplier To Vendor Action  -->
+
+		<!--     Supplier To Vendor Menu      -->
+		<menuitem  id="menu_supplier_id2" name="Supplier Connection" parent="magento_bridge.menu_magento_id1" action="supplier_configure_tree_action" sequence="1"/>
+		<!--     Supplier To Vendor Menu      -->
+
+	</data>
+</openerp>

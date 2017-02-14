@@ -1,0 +1,56 @@
+<openerp>
+	<data noupdate="0">
+
+       <record id="email_template_log" model="email.template">
+            <field name="name">Import Pricelist logs</field>
+            <field name="email_from">admin@goweb.com.do</field>
+            <field name="subject">Pricelist Csv log of supplier ${ctx['supplier']}</field>
+            <field name="email_to">productos@goweb.com.do,fbrea@goweb.com.do</field>
+            <field name="model_id" ref="auto_po_and_price_import.model_import_supplier_pricelist"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${user.lang}</field>
+              <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+
+    <p>Hi,</p>
+
+    <p>This is to inform you that the price list csv from the supplier ${ctx['supplier']} has been processed ${ctx['status']} on ${format_tz(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), format='%m/%d/%y,%H:%M %p', tz=user.tz, context={'lang':user.lang})}.</p>
+
+    <p>Please find attached the complete log for more details.</p>
+
+    <br/>
+    <br/>
+    Regards,
+    <br/>
+    Administrator,
+    <br/>
+    <br/>
+</div>
+            ]]></field>
+        </record>
+            
+            
+  <record id="email_template_cron2" model="email.template">
+            <field name="name">Odoo to Magento Sync</field>
+            <field name="email_from">admin@goweb.com.do</field>
+            <field name="subject">Odoo to Magento Sync (cron2) was ${ctx['status']} !</field>
+            <field name="email_to">productos@goweb.com.do,fbrea@goweb.com.do</field>
+            <field name="model_id" ref="auto_po_and_price_import.model_sync_back2_magento"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${user.lang}</field>
+              <field name="body_html"><![CDATA[
+<div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
+    <p>Hi,</p>
+    <p>This is to inform you that Synchronization from Odoo to Magento has been ${ctx['status']} ${ctx['status_log']} as on ${format_tz(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), format='%m/%d/%y,%H:%M %p', tz=user.tz, context={'lang':user.lang})}.</p>
+    <br/>
+    <br/>
+    Regards,
+    <br/>
+    Administrator,
+    <br/>
+    <br/>
+</div>
+            ]]></field>
+        </record>
+	</data>
+</openerp>

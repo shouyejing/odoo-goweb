@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="view_order_gift_wrap_form_inherit">
+            <field name="name">sale.order.gift.wrap.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='note']" position="after">
+                    <group col="4">
+                        <field name="additional_message"></field>
+                    </group>
+                    <group col="4">
+                        <field name="add_gift_message" groups="base.group_no_one"/>
+                    </group>
+                    <group col="4">
+                        <field name="gift_from" groups="base.group_no_one"/>
+                        <field name="gift_to" groups="base.group_no_one"/>
+                    </group>
+                    <group col="4">
+                        <field name="gift_message" groups="base.group_no_one"/>
+                    </group>
+                    <group col="4">
+                        <field name="gift_wrap_true" groups="base.group_no_one"/>
+                    </group>
+
+
+                </xpath>
+
+            </field>
+           
+        </record>
+        
+        <record model="ir.ui.view" id="view_order_gift_wrap_time_of_deliver_form_inherit">
+            <field name="name">sale.order.gift.wrap.time.of.deliverform.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="delivery.view_order_withcarrier_form"/>
+            <field name="arch" type="xml">
+
+                <!--xpath expr="//group[@name='sale_total']" position="after"
+                    <field name="time_of_delivery" string="Desired Time of Delive"/>
+                </xpath-->
+                <xpath expr="//group[@name='sale_total']" position="after">
+                    <group>
+                        <label for="time_of_delivery"/>
+                        <div>
+                            <field name="time_of_delivery" class="oe_inline"/>
+                        </div>
+                    </group>
+                </xpath>
+            
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="res_partner_contact_inherit" model="ir.ui.view">
+            <field name="name">res.partner.contact.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="contact_name"/>
+                </xpath>
+
+            </field>
+        </record>
+        <!--TODO-->
+
+        <record id="stock_picking_view_gift_wrap_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.gift.wrap.form.inherit</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <!--xpath expr="//field[@name='origin']" position="after">
+                    <field name="sale_order_id" groups="base.group_no_one"/>
+                </xpath-->
+                <xpath expr="//field[@name='note']" position="after">
+
+                    <group col="2">
+                        <field name="time_of_delivery" />
+                    </group>
+                    <group col="4">
+                        <field name="add_gift_message" />
+                    </group>
+                    <group col="4">
+                        <field name="gift_from"/>
+                        <field name="gift_to" />
+                    </group>
+                    <group>
+                        <field name="gift_message" />
+                    </group>
+                    <group col="4">
+                        <field name="gift_wrap_true" />
+                    </group>
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

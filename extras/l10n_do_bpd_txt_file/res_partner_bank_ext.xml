@@ -1,0 +1,15 @@
+<openerp>
+    <data>
+        <record id="res_partner_bank_ext" model="ir.ui.view">
+            <field name="name">partner bank tipo de cuenta y moneda</field>
+            <field name="model">res.partner.bank</field>
+            <field name="inherit_id" ref="base.view_partner_bank_form"/>
+            <field name="arch" type="xml">
+                <field name='bank_check_digit' position='after'>
+                    <field name='tipo_cuenta'/>
+                    <field name='moneda'/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

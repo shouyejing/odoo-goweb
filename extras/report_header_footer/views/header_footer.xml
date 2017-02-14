@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+    
+    	<record id="report.paperformat_euro" model="report.paperformat">
+            <field name="margin_bottom">30</field>
+        </record>
+        
+       <!-- <template id="report_invoice_document_external" inherit_id="account.report_invoice_document">
+			<xpath expr="//div[@class='row mt32 mb32']" position="after">
+					<style>
+						body{
+						       font-family:Trebuchet MS;
+						       background: url("data:image/png;base64,<t t-esc="''.join(res_company.logo_rotate and res_company.logo_rotate.split('\n') or '')"/>");
+						       background-size:300px 1000px;
+						       background-repeat: repeat-y;
+						       background-position: right center;
+						  	   align:right; 
+			      
+			   				 }
+			    		.page{
+						       background: url("data:image/png;base64,<t t-esc="''.join(res_company.logo_rotate and res_company.logo_rotate.split('\n') or '')"/>");
+						       background-size:300px 1000px;
+						       background-repeat: repeat-y;
+						       background-position: right center;
+						        align:right; 
+						    }
+					</style>
+
+					<script>
+		                var x = document.getElementsByTagName('div');
+		                    for (i = 0; i &lt; x.length; i++) {
+		                        y = x[i];
+		                        if (y.className == "page") {
+		                          y.style.height = (Math.floor(y.offsetHeight/1081))*335+"px";
+		                            //document.getElementById("test").innerHTML=y.offsetHeight;
+		                        }
+		                    }
+		            </script>
+            </xpath>			        
+            </template>
+        
+        <template id="report_saleorder_document_external" inherit_id="sale.report_saleorder_document">
+              <xpath expr="//div[@class='row mt32 mb32']" position="after">
+					<style>
+						body{
+						       font-family:Trebuchet MS;
+						       background: url("data:image/png;base64,<t t-esc="''.join(res_company.logo_rotate and res_company.logo_rotate.split('\n') or '')"/>");
+						       background-size:300px 1000px;
+						       background-repeat: repeat-y;
+						       background-position: right center;
+						  	   align:right; 
+			      
+			   				 }
+			    		.page{
+						       background: url("data:image/png;base64,<t t-esc="''.join(res_company.logo_rotate and res_company.logo_rotate.split('\n') or '')"/>");
+						       background-size:300px 1000px;
+						       background-repeat: repeat-y;
+						       background-position: right center;
+						        align:right; 
+						    }
+					</style>
+
+					<script>
+		                var x = document.getElementsByTagName('div');
+		                    for (i = 0; i &lt; x.length; i++) {
+		                        y = x[i];
+		                        if (y.className == "page") {
+		                          y.style.height = (Math.floor(y.offsetHeight/2081))*335+"px";
+		                            //document.getElementById("test").innerHTML=y.offsetHeight;
+		                        }
+		                    }
+		            </script>
+            </xpath>			
+        </template>-->
+        
+        <template id="company_extenal_lay_header" inherit_id="report.external_layout_header" name="Improved Header">
+            <xpath expr="//div[@class='header']" position="replace">
+            	<div class="header">
+	            	<div class="row">
+			            <div class="col-xs-3">
+			                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % company.logo" style="max-height:80px;"/>
+			            </div>
+			            <div class="col-xs-9 text-right" style="margin-top:30px;">
+			            	<span style="color:#FF4500;">RNC: </span><span style="font-family:Serif">1-31-25595-7</span>
+		            	</div>
+		            	
+			        </div>
+		        </div>
+            </xpath>
+        </template>
+        
+        <template id="company_extenal_lay_footer" inherit_id="report.external_layout_footer" name="Improved Footer">
+            <xpath expr="//div[@class='footer']" position="replace">
+            	<div class="footer">
+	            	<div class="row">
+						<div class="col-xs-8">
+							<t t-if="not company.custom_footer" class="list-inline">
+								<t t-if="company.phone">
+									<i class="fa fa-mobile-phone fa-lg" style="color:#FF4500"/> <span style="font-size:15px;font-family:Serif" t-field="company.phone"/><br/>
+								</t>
+<!-- 								<t t-if="company.fax"> -->
+<!-- 									<i class='fa fa-file-text-o' style="color:#FF4500"></i>	<span style="font-size:15px;font-family:Serif" t-field="company.fax"/><br></br> -->
+<!-- 								</t> -->
+								<t t-if="company.email">
+									<i class="fa fa-envelope" style="color:#FF4500"></i> <span style="font-size:15px;font-family:Serif" t-field="company.email"/><br/>
+								</t>
+								<t t-if="company.website">
+									<i class="fa fa-globe" style="color:#FF4500"></i> <span style="font-size:15px;font-family:Serif" t-field="company.website"/>
+								</t>
+							</t>
+							<br/>
+							<br/>
+		               	</div>
+		               	<div class="col-xs-4" style="text-align:left">
+		               		<br/>
+		               		<i class="fa fa-map-marker" style="color:#FF4500"></i>
+		               		<t t-if="company.partner_id.street">
+		               			<span style="font-size:15px;font-family:Serif" t-field="company.partner_id.street"/>
+		               		</t>
+		               		<t t-if="company.partner_id.street2">
+		               			<span style="font-size:15px;font-family:Serif" t-field="company.partner_id.street2"/>
+		               		</t>
+		               		<t t-if="company.partner_id.city">
+		               			<span style="font-size:15px;font-family:Serif" t-field="company.partner_id.city"/>
+		               		</t>
+		               		<t t-if="company.partner_id.state_id">
+		               			<span style="font-size:15px;font-family:Serif" t-field="company.partner_id.state_id.name"/>
+		               		</t>
+<!--		               		<t t-if="company.partner_id.zip">
+		               			<span style="font-size:15px;font-family:Serif" t-field="company.partner_id.zip"/>
+		               		</t> -->
+		               		<t t-if="company.partner_id.country_id">
+		               			<span style="font-size:15px;font-family:Serif" t-field="company.partner_id.country_id.name"/>
+		               		</t>
+		               	</div>
+						<br/>
+		               	<div class="col-xs-12" style="background-color:#FF4500;color:#FF4500;box-shadow: 0px -10px 15px rgba(0,0,0,0.3);">
+	               		 	<br/>
+	               		 	<br/>
+	               		 	<br/>
+	               		</div>
+		            </div>
+	            </div>
+	            
+            </xpath>
+        </template>
+        
+        
+    </data>
+</openerp>
