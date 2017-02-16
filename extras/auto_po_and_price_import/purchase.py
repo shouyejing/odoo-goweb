@@ -74,7 +74,8 @@ class account_invoice(models.Model):
         template = self.env.ref('account.email_template_edi_invoice', False)
         if template:
             for invoice in self:
-                template.send_mail(invoice.id, force_send=True)
+                if invoice.type == 'out_invoice':
+                    template.send_mail(invoice.id, force_send=True)
         return res     
     
            
