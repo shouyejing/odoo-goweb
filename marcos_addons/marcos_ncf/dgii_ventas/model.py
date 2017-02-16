@@ -114,7 +114,7 @@ class sale_report(osv.Model):
         line_ids = [line.id for line in report.sale_report_line_ids]
         lines_obj.unlink(cr, uid, line_ids)
 
-        result = self.create_sales(cr, uid, report.id, report.period_id.id, context=context)
+        result = self.create_sales_again(cr, uid, report.id, report.period_id.id, context=context)
 
         vals = self._get_updated_fields(cr, uid, ids, context=None)
         self.write(cr, uid, ids, vals)
@@ -153,6 +153,60 @@ class sale_report(osv.Model):
             elif len(invoice.partner_id.ref) == 11:
                 ref_type = 2
             
+            tax_line_ids = tax_line_obj.search(cr, uid, [("invoice_id", "=", invoice.id)])
+
+            company_currency = self.pool['res.company'].browse(cr, uid, invoice.company_id.id).currency_id.id
+            MONTO_FACTURADO = cur_obj.compute(cr, uid, invoice.currency_id.id, company_currency, invoice.amount_untaxed, context={'date': invoice.date_invoice or time.strftime('%Y-%m-%d')}, round=False)
+            ITBIS_FACTURADO = cur_obj.compute(cr, uid, invoice.currency_id.id, company_currency, invoice.amount_tax, context={'date': invoice.date_invoice or time.strftime('%Y-%m-%d')}, round=False)
+
+            values = {
+                u'RNC_CEDULA': invoice.partner_id.ref,
+                u'TIPO_DE_IDENTIFICACION': ref_type,
+                u'NUMERO_COMPROBANTE_FISCAL': invoice.internal_number,
+                u'NUMERO_DE_COMPROBANTE_MODIFICADO': invoice.parent_id.internal_number,
+                u'FECHA_COMPROBANTE': invoice.date_invoice.replace(u"-", u""),
+                u'ITBIS_FACTURADO': abs(ITBIS_FACTURADO),
+                u'MONTO_FACTURADO': abs(MONTO_FACTURADO),
+                u"line": line,
+                u'sale_report_id': sale_report_id
+                }
+            line += 1
+            sale_report_line_obj.create(cr, uid, values, context=context)
+        #self.action_generate_607(cr, uid, sale_report_id, context=context)
+        return True
+
+    def create_sales_again(self, cr, uid, sale_report_id, period_id, context=None):
+        tax_line_obj = self.pool.get('account.invoice.tax')
+        tax_obj = self.pool.get('account.tax')
+        invoice_obj = self.pool.get('account.invoice')
+        cur_obj = self.pool.get('res.currency')
+        sale_report_line_obj = self.pool.get('marcos.dgii.sale.report.line')
+
+        draft_sale_inv_ids = invoice_obj.search(cr, uid, [("state", "not in", ["open", "paid", "cancel"]), ("period_id", "=", period_id), ("type", "in", ["out_invoice", "out_refund"])])
+        if draft_sale_inv_ids:
+            raise osv.except_osv(_(u'Ventas o Notas de Débito en Borrador!'), _(u"Asegúrese que todas sus ventas y notas de débitos este validadas."))
+
+        sale_inv_ids = invoice_obj.search(cr, uid, [("state", "in", ["open", "paid"]), ("period_id", "=", period_id), ("type", "in", ["out_invoice", "out_refund"])])
+
+
+        line = 1
+        nc_monto_facturado = 0
+        nc_itbis_facturado = 0
+
+        for inv_id in sale_inv_ids:
+            invoice = invoice_obj.browse(cr, uid, inv_id)
+
+            payment_date = None
+            if invoice.payment_ids and not invoice.residual:  # Invoice must be completly payed
+                payment_date = invoice.payment_ids[0].date.replace("-", "")
+
+            if not invoice.partner_id.ref:
+                ref_type = 3
+            elif len(invoice.partner_id.ref) == 9:
+                ref_type = 1
+            elif len(invoice.partner_id.ref) == 11:
+                ref_type = 2
+
             tax_line_ids = tax_line_obj.search(cr, uid, [("invoice_id", "=", invoice.id)])
 
             company_currency = self.pool['res.company'].browse(cr, uid, invoice.company_id.id).currency_id.id

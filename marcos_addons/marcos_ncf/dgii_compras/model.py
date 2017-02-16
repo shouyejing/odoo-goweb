@@ -107,12 +107,9 @@ class purchase_report(osv.Model):
         Re-write to create purchases and to update read-only fields.
 
         """
-
         res = super(purchase_report, self).create(cr, uid, values, context=context)
-
         # Loads all purchases
         self.create_purchases(cr, uid, res, values['period_id'], context=context)
-
         # Update readonly fields
         vals = self._get_updated_fields(cr, uid, [res], context=None)
         self.write(cr, uid, [res], vals)
@@ -136,7 +133,7 @@ class purchase_report(osv.Model):
         line_ids = [line.id for line in report.purchase_report_line_ids]
         lines_obj.unlink(cr, uid, line_ids)
 
-        result = self.create_purchases(cr, uid, report.id, report.period_id.id, context=context)
+        result = self.create_purchases_again(cr, uid, report.id, report.period_id.id, context=context)
 
         vals = self._get_updated_fields(cr, uid, ids, context=None)
         self.write(cr, uid, ids, vals)
@@ -222,12 +219,93 @@ class purchase_report(osv.Model):
 
             line += 1
             purchase_report_line_obj.create(cr, uid, values, context=context)
+        #self.action_generate_606(cr, uid, purchase_report_id, context=context)
+        return True
+
+    def create_purchases_again(self, cr, uid, purchase_report_id, period_id, context=None):
+        tax_line_obj = self.pool.get('account.invoice.tax')
+        tax_obj = self.pool.get('account.tax')
+        invoice_obj = self.pool.get('account.invoice')
+        cur_obj = self.pool.get('res.currency')
+        purchase_report_line_obj = self.pool.get('marcos.dgii.purchase.report.line')
+
+        draft_purchase_inv_ids = invoice_obj.search(cr, uid, [("state", "not in", ["open", "paid", "cancel"]), ("period_id", "=", period_id), ("type", "in", ["in_invoice", "in_refund"])])
+        if draft_purchase_inv_ids:
+            raise osv.except_osv(_(u'Compras o Notas de Crédito en Borrador!'), _(u"Asegúrese que todas sus compras y notas de crédito este validadas."))
+
+        purchase_inv_ids = invoice_obj.search(cr, uid, [("state", "in", ["open", "paid"]), ("period_id", "=", period_id), ("type", "in", ["in_invoice", "in_refund"]), ("reference_type", "not in", ["ext"])])
+
+        line = 1
+        for inv_id in purchase_inv_ids:
+            invoice = invoice_obj.browse(cr, uid, inv_id)
+
+            payment_date = None
+            if invoice.payment_ids and not invoice.residual:  # Invoice must be completly payed
+                payment_date = invoice.payment_ids[0].date.replace("-", "")
+
+            if not invoice.partner_id.ref or not len(invoice.partner_id.ref) in [9, 11]:
+                raise osv.except_osv(_(u'RNC/Cédula'), _(u"Verifique el RNC/Cédula de este proveedor: %s" % invoice.partner_id.name))
+
+            ref_type = 1 if len(invoice.partner_id.ref) == 9 else 2
+
+            tax_line_ids = tax_line_obj.search(cr, uid, [("invoice_id", "=", invoice.id)])
+
+            company_currency = self.pool['res.company'].browse(cr, uid, invoice.company_id.id).currency_id.id
+            MONTO_FACTURADO = cur_obj.compute(cr, uid, invoice.currency_id.id, company_currency, invoice.amount_untaxed, context={'date': invoice.date_invoice or time.strftime('%Y-%m-%d')}, round=False)
+
+            ITBIS_PAGADO = 0.00
+            ITBIS_RETENIDO = 0.00
+            RETENCION_RENTA = 0.00
+            for tax_line in tax_line_obj.browse(cr, uid, tax_line_ids):
+                tax_ids = tax_obj.search(cr, uid, [("account_collected_id", "=", tax_line.account_id.id)])
+                if tax_ids:
+                    tax = tax_obj.browse(cr, uid, tax_ids)[0]
+                    if not tax.itbis and tax.retention:
+                        if company_currency != invoice.currency_id.id: # TODO when invoice is differente currency lose presition on tax calculator
+                            RETENCION_RENTA += MONTO_FACTURADO * tax.amount
+                        else:
+                            RETENCION_RENTA += tax_line.tax_amount
+                    elif tax.itbis and not tax.retention:
+                        if company_currency != invoice.currency_id.id: # TODO when invoice is differente currency lose presition on tax calculator
+                            ITBIS_PAGADO += MONTO_FACTURADO * tax.amount
+                        else:
+                            ITBIS_PAGADO += tax_line.tax_amount
+                    elif tax.itbis and tax.retention:
+                        if not payment_date:
+                            payment_date = invoice.date_invoice.replace(u"-", u"")
+                        if company_currency != invoice.currency_id.id: # TODO when invoice is differente currency lose presition on tax calculator
+                            #import pdb; pdb.set_trace()
+                            ITBIS_RETENIDO += tax_line.tax_amount
+                        else:
+                            ITBIS_RETENIDO += tax_line.tax_amount
+
+
+            if invoice.reference_type == 'none':
+                raise osv.except_osv(_(u'Tipo de comprobante invalido!'), _(u"Verifique el tipo de este proveedor: %s" % invoice.number))
+
+            values = {
+                u'RNC_CEDULA': invoice.partner_id.ref,
+                u'TIPO_DE_IDENTIFICACION': ref_type,
+                u'TIPO_DE_BIENES_SERVICIOS_COMPRADOS': invoice.reference_type,
+                u'NUMERO_COMPROBANTE_FISCAL': invoice.number,
+                u'NUMERO_DE_COMPROBANTE_MODIFICADO': invoice.parent_id.number,
+                u'FECHA_COMPROBANTE': invoice.date_invoice.replace(u"-", u""),
+                u'FECHA_PAGO': payment_date,
+                u'ITBIS_PAGADO': abs(ITBIS_PAGADO),
+                u'ITBIS_RETENIDO': abs(ITBIS_RETENIDO),
+                u'MONTO_FACTURADO': abs(MONTO_FACTURADO),
+                u'RETENCION_RENTA': abs(RETENCION_RENTA),
+                u"line": line,
+                u'purchase_report_id': purchase_report_id
+                }
+
+            line += 1
+            purchase_report_line_obj.create(cr, uid, values, context=context)
         self.action_generate_606(cr, uid, purchase_report_id, context=context)
         return True
 
-
-
     def action_generate_606(self, cr, uid, ids, context=None):
+        #import pdb; pdb.set_trace()
         path = '/tmp/606.txt'
         f = open(path,'w')
 
