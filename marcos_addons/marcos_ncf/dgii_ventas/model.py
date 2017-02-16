@@ -38,6 +38,16 @@ class sale_report(osv.Model):
         sale_report = sale_report_obj.browse(cr, uid, ids, context=context)[0]
         return len(sale_report.sale_report_line_ids)
 
+    def _sum_out_refund_amount(self, cr, uid, ids, field, context=None):
+        #import pdb; pdb.set_trace()
+        sale_report_obj = self.pool.get('marcos.dgii.sale.report')
+        sale_report = sale_report_obj.browse(cr, uid, ids, context=context)[0]
+        res = 0
+        for line in sale_report.sale_report_line_ids:
+            if line.NUMERO_DE_COMPROBANTE_MODIFICADO:
+                res = res + line[field]
+        return res
+
     def _sum_amount(self, cr, uid, ids, field, context=None):
         sale_report_obj = self.pool.get('marcos.dgii.sale.report')
         sale_report = sale_report_obj.browse(cr, uid, ids, context=context)[0]
@@ -49,8 +59,10 @@ class sale_report(osv.Model):
     def _get_updated_fields(self, cr, uid, ids, context=None):
         vals = {}
         vals['line_count'] = self._line_count(cr, uid, ids, context=context)
-        vals['billed_amount_total'] = self._sum_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context)
-        vals['billed_tax_total'] = self._sum_amount(cr, uid, ids, u'ITBIS_FACTURADO', context=context)
+        vals['billed_amount_total'] = (self._sum_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context) -
+                                       self._sum_out_refund_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context))
+        vals['billed_tax_total'] = (self._sum_amount(cr, uid, ids, u'ITBIS_FACTURADO', context=context) -
+                                    self._sum_out_refund_amount(cr, uid, ids, u'ITBIS_FACTURADO', context=context))
         return vals
 
     _columns = {
@@ -124,6 +136,9 @@ class sale_report(osv.Model):
 
 
         line = 1
+        nc_monto_facturado = 0
+        nc_itbis_facturado = 0
+
         for inv_id in sale_inv_ids:
             invoice = invoice_obj.browse(cr, uid, inv_id)
 

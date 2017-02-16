@@ -63,13 +63,26 @@ class purchase_report(osv.Model):
             res = res + line[field]
         return res
 
+    def _sum_in_refund_amount(self, cr, uid, ids, field, context=None):
+        purchase_report_obj = self.pool.get('marcos.dgii.purchase.report')
+        purchase_report = purchase_report_obj.browse(cr, uid, ids, context=context)[0]
+        res = 0
+        for line in purchase_report.purchase_report_line_ids:
+            if line.NUMERO_DE_COMPROBANTE_MODIFICADO:
+                res = res + line[field]
+        return res
+
     def _get_updated_fields(self, cr, uid, ids, context=None):
         vals = {}
         vals['line_count'] = self._line_count(cr, uid, ids, context=context)
-        vals['billed_amount_total'] = self._sum_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context)
-        vals['billed_tax_total'] = self._sum_amount(cr, uid, ids, u'ITBIS_PAGADO', context=context)
-        vals['retained_tax_total'] = self._sum_amount(cr, uid, ids, u'ITBIS_RETENIDO', context=context)
-        vals['retained_isr_total'] = self._sum_amount(cr, uid, ids, u'RETENCION_RENTA', context=context)
+        vals['billed_amount_total'] = (self._sum_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context) -
+                                       self._sum_in_refund_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context))
+        vals['billed_tax_total'] = (self._sum_amount(cr, uid, ids, u'ITBIS_PAGADO', context=context) -
+                                    self._sum_in_refund_amount(cr, uid, ids, u'ITBIS_PAGADO', context=context))
+        vals['retained_tax_total'] = (self._sum_amount(cr, uid, ids, u'ITBIS_RETENIDO', context=context) -
+                                      self._sum_in_refund_amount(cr, uid, ids, u'ITBIS_RETENIDO', context=context))
+        vals['retained_isr_total'] = (self._sum_amount(cr, uid, ids, u'RETENCION_RENTA', context=context) -
+                                      self._sum_in_refund_amount(cr, uid, ids, u'RETENCION_RENTA', context=context))
         return vals
 
     _columns = {
