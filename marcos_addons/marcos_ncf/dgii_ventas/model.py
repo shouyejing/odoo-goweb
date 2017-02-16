@@ -60,9 +60,11 @@ class sale_report(osv.Model):
         vals = {}
         vals['line_count'] = self._line_count(cr, uid, ids, context=context)
         vals['billed_amount_total'] = (self._sum_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context) -
-                                       self._sum_out_refund_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context))
+                                       (self._sum_out_refund_amount(cr, uid, ids, u'MONTO_FACTURADO', context=context)) * 2
+                                       )
         vals['billed_tax_total'] = (self._sum_amount(cr, uid, ids, u'ITBIS_FACTURADO', context=context) -
-                                    self._sum_out_refund_amount(cr, uid, ids, u'ITBIS_FACTURADO', context=context))
+                                    (self._sum_out_refund_amount(cr, uid, ids, u'ITBIS_FACTURADO', context=context)) * 2
+                                    )
         return vals
 
     _columns = {
